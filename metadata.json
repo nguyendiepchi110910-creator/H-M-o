@@ -1,0 +1,6 @@
+{
+  "name": "TIC Labs",
+  "description": "TIC Labs — See it. Test it. Understand it. Quan sát. Thử nghiệm. Hiểu bản chất. Nền tảng khóa học Vật lý tương tác, thí nghiệm mô phỏng 2.5D, tổng ôn chuyên đề và luyện thi toàn diện.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

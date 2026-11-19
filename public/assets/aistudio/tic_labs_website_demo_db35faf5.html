@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIC Labs | See it. Test it. Understand it.</title>
+  <style>
+    :root {
+      --blue: #2162c5;
+      --blue-dark: #123b75;
+      --blue-light: #eaf2ff;
+      --text: #202b3c;
+      --muted: #64748b;
+      --line: #e5edf8;
+      --white: #fff;
+      --shadow: 0 14px 40px rgba(26, 75, 145, .09);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    header {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .nav { height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 11px; color: var(--blue); font-size: 27px; font-weight: 750; letter-spacing: -.8px; }
+    .brand-mark { width: 43px; height: 43px; display: grid; place-items: center; }
+    .brand-mark svg { width: 100%; height: 100%; }
+    .nav-links { display: flex; align-items: center; gap: 34px; color: var(--blue-dark); font-weight: 550; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      border: 0; border-radius: 999px; padding: 13px 24px;
+      color: #fff; background: var(--blue); font-weight: 650; cursor: pointer;
+      transition: .2s ease;
+    }
+    .btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .btn-outline { background: #fff; color: var(--blue); border: 1px solid #cfe0fa; }
+    .btn-outline:hover { color: #fff; }
+    .hero { padding: 78px 0 48px; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 45px; }
+    .eyebrow { color: var(--blue); font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; font-size: 12px; }
+    h1 { color: var(--blue); font-size: clamp(48px, 7vw, 82px); line-height: 1.02; letter-spacing: -3px; margin: 12px 0 16px; }
+    .tagline { color: var(--blue); font-size: clamp(20px, 2.4vw, 30px); font-weight: 600; margin: 0 0 8px; }
+    .subtitle { color: var(--blue-dark); font-size: 19px; margin: 0 0 28px; }
+    .atom-wrap { display: grid; place-items: center; min-height: 310px; }
+    .atom-wrap svg { width: min(100%, 390px); height: auto; }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 0; margin-top: 50px; }
+    .feature { display: flex; align-items: center; justify-content: center; gap: 13px; padding: 8px 18px; color: var(--blue-dark); }
+    .feature + .feature { border-left: 1px solid #cbdcf5; }
+    .feature-icon { color: var(--blue); font-size: 25px; }
+    section { padding: 76px 0; }
+    .section-head { text-align: center; max-width: 680px; margin: 0 auto 34px; }
+    .section-head h2 { color: var(--blue-dark); font-size: clamp(28px, 4vw, 40px); margin: 8px 0 10px; letter-spacing: -.8px; }
+    .section-head p { color: var(--muted); margin: 0; }
+    .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .course-card { border: 1px solid var(--line); border-radius: 20px; padding: 25px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+    .course-card.featured { border: 2px solid var(--blue); position: relative; }
+    .course-label { display: inline-flex; align-self: flex-start; color: var(--blue); background: var(--blue-light); padding: 5px 11px; border-radius: 99px; font-size: 12px; font-weight: 700; }
+    .course-card h3 { color: var(--blue-dark); font-size: 22px; margin: 15px 0 7px; }
+    .course-card p { color: var(--muted); margin: 0 0 14px; min-height: 48px; }
+    .course-card ul { padding-left: 19px; margin: 0 0 22px; color: #475569; flex: 1; }
+    .course-card li { margin: 7px 0; }
+    .price-row { display: flex; align-items: baseline; gap: 10px; margin: 5px 0 3px; }
+    .price { font-size: 29px; font-weight: 800; color: var(--blue); }
+    .old-price { color: #94a3b8; text-decoration: line-through; font-size: 14px; }
+    .price-note { color: var(--muted); font-size: 12px; margin-bottom: 17px; }
+    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .how-card { background: #f8fbff; border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+    .number { color: var(--blue); font-weight: 800; font-size: 13px; }
+    .how-card h3 { color: var(--blue-dark); margin: 8px 0; font-size: 18px; }
+    .how-card p { color: var(--muted); margin: 0; font-size: 14px; }
+    .register-section { background: #f7faff; }
+    .register-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 36px; align-items: start; }
+    .register-copy h2 { color: var(--blue-dark); font-size: 36px; line-height: 1.15; margin: 10px 0; }
+    .register-copy p { color: var(--muted); }
+    .form-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 27px; box-shadow: var(--shadow); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+    label { font-size: 13px; color: var(--blue-dark); font-weight: 650; }
+    input, select, textarea { width: 100%; padding: 12px 13px; border: 1px solid #dbe5f2; border-radius: 10px; outline: none; background: #fff; color: var(--text); }
+    input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(33,98,197,.1); }
+    .consent { display: flex; align-items: flex-start; gap: 9px; margin: 16px 0; color: var(--muted); font-size: 12px; }
+    .consent input { width: auto; margin-top: 4px; }
+    .form-message { margin-top: 12px; font-size: 13px; color: #176b42; }
+    .admin-note { font-size: 12px; color: var(--muted); margin-top: 13px; }
+    .admin-panel { margin-top: 30px; background: #fff; border: 1px dashed #b9cce8; border-radius: 16px; padding: 20px; }
+    .admin-panel h3 { color: var(--blue-dark); margin: 0 0 8px; }
+    .admin-panel p { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    th { color: var(--blue-dark); background: #f8fbff; }
+    footer { padding: 28px 0; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    @media (max-width: 800px) {
+      .nav { height: auto; min-height: 70px; flex-wrap: wrap; padding: 13px 0; }
+      .nav-links { order: 3; width: 100%; justify-content: center; gap: 18px; font-size: 14px; }
+      .brand { font-size: 23px; }
+      .hero { padding-top: 48px; }
+      .hero-grid, .register-grid { grid-template-columns: 1fr; }
+      .atom-wrap { min-height: 220px; }
+      .features { grid-template-columns: 1fr; gap: 10px; margin-top: 25px; }
+      .feature + .feature { border-left: 0; }
+      .course-grid, .how-grid { grid-template-columns: 1fr; }
+      section { padding: 55px 0; }
+    }
+    @media (max-width: 520px) {
+      .container { width: min(100% - 28px, 1120px); }
+      .nav-links { gap: 12px; font-size: 12px; }
+      .nav > .btn { padding: 10px 15px; font-size: 13px; }
+      h1 { letter-spacing: -2px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .form-card { padding: 19px; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a class="brand" href="#home" aria-label="TIC Labs trang chủ">
+      <span class="brand-mark">
+        <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <g stroke="#2162c5" stroke-width="2.8">
+            <ellipse cx="32" cy="32" rx="27" ry="10" transform="rotate(55 32 32)"/>
+            <ellipse cx="32" cy="32" rx="27" ry="10" transform="rotate(-55 32 32)"/>
+            <ellipse cx="32" cy="32" rx="27" ry="10"/>
+          </g><circle cx="32" cy="32" r="4.5" fill="#2162c5"/>
+        </svg>
+      </span>
+      <span>TIC Labs</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#courses">Khóa học</a>
+      <a href="#simulation">Mô phỏng</a>
+      <a href="#about">Giới thiệu</a>
+    </nav>
+    <a class="btn" href="#register">Đăng ký</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Physics learning experience</div>
+          <h1>TIC Labs</h1>
+          <p class="tagline">See it. Test it. Understand it.</p>
+          <p class="subtitle">Quan sát. Thử nghiệm. Hiểu bản chất.</p>
+          <a class="btn" href="#courses">Khám phá khóa học <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="atom-wrap" aria-hidden="true">
+          <svg viewBox="0 0 420 340" fill="none">
+            <g stroke-linecap="round">
+              <ellipse cx="210" cy="170" rx="165" ry="62" transform="rotate(30 210 170)" stroke="#2162c5" stroke-width="3"/>
+              <ellipse cx="210" cy="170" rx="165" ry="62" transform="rotate(-30 210 170)" stroke="#8db5ef" stroke-width="3"/>
+              <ellipse cx="210" cy="170" rx="165" ry="62" transform="rotate(90 210 170)" stroke="#c8dcfb" stroke-width="3"/>
+            </g>
+            <circle cx="210" cy="170" r="34" fill="#2162c5"/>
+            <circle cx="345" cy="105" r="10" fill="#2162c5"/>
+            <circle cx="75" cy="220" r="9" fill="#6c9de5"/>
+            <circle cx="250" cy="10" r="7" fill="#2162c5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="features">
+        <div class="feature"><span class="feature-icon">◎</span><span>Mô phỏng thí nghiệm<br>tương tác</span></div>
+        <div class="feature"><span class="feature-icon">▱</span><span>Khóa học Vật lý<br>có hệ thống</span></div>
+        <div class="feature"><span class="feature-icon">▥</span><span>Đăng ký và tư vấn<br>học tập thuận tiện</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="courses">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Our courses</div>
+        <h2>Chọn lộ trình học phù hợp</h2>
+        <p>Khám phá nội dung từng khóa học và để lại thông tin để TIC Labs tư vấn chi tiết.</p>
+      </div>
+      <div class="course-grid">
+        <article class="course-card" id="simulation">
+          <span class="course-label">Trải nghiệm trực quan</span>
+          <h3>Simulation</h3>
+          <p>Thí nghiệm và mô phỏng Vật lý tương tác trên website.</p>
+          <ul>
+            <li>12 chuyên đề Vật lý</li>
+            <li>24 mô phỏng thí nghiệm 2.5D</li>
+            <li>Thay đổi biến số và quan sát kết quả</li>
+          </ul>
+          <div class="price-row"><span class="price">229.000đ</span><span class="old-price">299.000đ</span></div>
+          <div class="price-note">Giá Early Bird / Giá gốc dự kiến 299.000đ</div>
+          <button class="btn btn-outline" type="button" onclick="chooseCourse('Simulation')">Đăng ký khóa này</button>
+        </article>
+        <article class="course-card">
+          <span class="course-label">Củng cố kiến thức</span>
+          <h3>Topic Review</h3>
+          <p>Hệ thống hóa kiến thức và luyện tập theo từng dạng bài.</p>
+          <ul>
+            <li>Tổng hợp kiến thức theo chuyên đề</li>
+            <li>Luyện tập theo dạng bài</li>
+            <li>Kiểm tra định kỳ</li>
+          </ul>
+          <div class="price-row"><span class="price">269.000đ</span><span class="old-price">349.000đ</span></div>
+          <div class="price-note">Giá Early Bird / Giá gốc dự kiến 349.000đ</div>
+          <button class="btn btn-outline" type="button" onclick="chooseCourse('Topic Review')">Đăng ký khóa này</button>
+        </article>
+        <article class="course-card featured">
+          <span class="course-label">Lộ trình toàn diện</span>
+          <h3>Exam</h3>
+          <p>Chương trình học hướng đến ôn luyện và chuẩn bị cho kỳ thi.</p>
+          <ul>
+            <li>Hệ thống nội dung ôn tập</li>
+            <li>Luyện tập và đánh giá năng lực</li>
+            <li>Thông tin hỗ trợ học tập theo chương trình</li>
+          </ul>
+          <div class="price-row"><span class="price">599.000đ</span><span class="old-price">749.000đ</span></div>
+          <div class="price-note">Giá Early Bird / Giá gốc dự kiến 749.000đ</div>
+          <button class="btn" type="button" onclick="chooseCourse('Exam')">Đăng ký khóa này</button>
+        </article>
+      </div>
+      <p class="admin-note">* Giá hiển thị là mức đề xuất để chạy thử; hãy cập nhật trước khi công bố chính thức.</p>
+    </div>
+  </section>
+
+  <section id="about" style="background:#f8fbff">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">How it works</div>
+        <h2>Đăng ký học tại TIC Labs</h2>
+        <p>Quy trình đơn giản, chưa cần tạo hệ thống học viên phức tạp ở giai đoạn đầu.</p>
+      </div>
+      <div class="how-grid">
+        <div class="how-card"><div class="number">01 / CHỌN KHÓA</div><h3>Tìm hiểu nội dung</h3><p>Xem mô tả, quyền lợi và mức học phí của từng khóa.</p></div>
+        <div class="how-card"><div class="number">02 / ĐỂ LẠI THÔNG TIN</div><h3>Gửi đăng ký</h3><p>Điền họ tên, thông tin liên hệ và khóa học quan tâm.</p></div>
+        <div class="how-card"><div class="number">03 / XÁC NHẬN</div><h3>TIC Labs liên hệ</h3><p>Đội ngũ TIC Labs xác nhận thông tin và hướng dẫn bước tiếp theo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="register-section" id="register">
+    <div class="container register-grid">
+      <div class="register-copy">
+        <div class="eyebrow">Registration</div>
+        <h2>Đăng ký nhận tư vấn khóa học</h2>
+        <p>Để lại thông tin. TIC Labs sẽ liên hệ để xác nhận khóa học, lịch học và các thông tin cần thiết.</p>
+        <p><strong>Lưu ý:</strong> Gửi biểu mẫu này chưa đồng nghĩa với việc đã thanh toán hoặc xác nhận giữ chỗ.</p>
+      </div>
+      <div>
+        <form class="form-card" id="registrationForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="fullname">Họ và tên *</label>
+              <input id="fullname" name="fullname" required maxlength="80" placeholder="Nguyễn Văn A" />
+            </div>
+            <div class="field">
+              <label for="phone">Số điện thoại *</label>
+              <input id="phone" name="phone" required inputmode="tel" maxlength="20" placeholder="09xx xxx xxx" />
+            </div>
+            <div class="field">
+              <label for="email">Email (không bắt buộc)</label>
+              <input id="email" name="email" type="email" maxlength="120" placeholder="email@example.com" />
+            </div>
+            <div class="field">
+              <label for="grade">Khối lớp</label>
+              <select id="grade" name="grade">
+                <option value="">Chọn khối lớp</option>
+                <option>Lớp 10</option><option>Lớp 11</option><option>Lớp 12</option><option>Khác</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="course">Khóa học quan tâm *</label>
+              <select id="course" name="course" required>
+                <option value="">Chọn khóa học</option>
+                <option>Simulation</option><option>Topic Review</option><option>Exam</option>
+                <option>Muốn được tư vấn thêm</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="note">Câu hỏi thêm (không bắt buộc)</label>
+              <textarea id="note" name="note" rows="3" maxlength="500" placeholder="Bạn muốn tìm hiểu thêm điều gì?"></textarea>
+            </div>
+          </div>
+          <label class="consent"><input type="checkbox" required /> <span>Tôi đồng ý để TIC Labs sử dụng thông tin trên nhằm liên hệ tư vấn về khóa học. *</span></label>
+          <button class="btn" type="submit" style="width:100%">Gửi thông tin đăng ký</button>
+          <div class="form-message" id="formMessage" role="status" aria-live="polite"></div>
+          <div class="admin-note">Bản demo lưu thông tin trên trình duyệt đang mở. Cần kết nối Google Forms hoặc máy chủ để TIC Labs nhận đăng ký từ nhiều thiết bị.</div>
+        </form>
+
+        <div class="admin-panel">
+          <h3>Danh sách đăng ký (bản demo)</h3>
+          <p>Chỉ hiển thị các lượt đăng ký đã gửi trên trình duyệt này. Không phải trang quản trị bảo mật.</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Họ tên</th><th>Điện thoại</th><th>Khóa học</th><th>Thời gian</th></tr></thead>
+              <tbody id="registrations"><tr><td colspan="4" style="color:#94a3b8">Chưa có đăng ký nào trên trình duyệt này.</td></tr></tbody>
+            </table>
+          </div>
+          <button class="btn btn-outline" type="button" id="downloadCsv" style="margin-top:14px">Tải danh sách CSV</button>
+          <button class="btn btn-outline" type="button" id="clearData" style="margin-top:14px">Xóa dữ liệu demo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <strong style="color:var(--blue)">TIC Labs</strong>
+    <span>See it. Test it. Understand it.</span>
+    <span>© <span id="year"></span> TIC Labs. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  const STORAGE_KEY = "tic_labs_demo_registrations";
+  const form = document.getElementById("registrationForm");
+  const message = document.getElementById("formMessage");
+
+  function getRegistrations() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
+    catch { return []; }
+  }
+
+  function renderRegistrations() {
+    const rows = getRegistrations();
+    const tbody = document.getElementById("registrations");
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="4" style="color:#94a3b8">Chưa có đăng ký nào trên trình duyệt này.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td>${escapeHtml(r.fullname)}</td>
+        <td>${escapeHtml(r.phone)}</td>
+        <td>${escapeHtml(r.course)}</td>
+        <td>${escapeHtml(r.createdAt)}</td>
+      </tr>`).join("");
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, ch => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
+    }[ch]));
+  }
+
+  function chooseCourse(course) {
+    document.getElementById("course").value = course;
+    document.getElementById("register").scrollIntoView({ behavior: "smooth" });
+  }
+
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const data = Object.fromEntries(new FormData(form).entries());
+    const rows = getRegistrations();
+    rows.push({
+      fullname: data.fullname.trim(),
+      phone: data.phone.trim(),
+      email: data.email.trim(),
+      grade: data.grade,
+      course: data.course,
+      note: data.note.trim(),
+      createdAt: new Date().toLocaleString("vi-VN")
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
+    form.reset();
+    message.textContent = "Đã ghi nhận thông tin trên trình duyệt này. Đây là bản demo, TIC Labs chưa nhận dữ liệu từ xa.";
+    renderRegistrations();
+  });
+
+  document.getElementById("downloadCsv").addEventListener("click", function() {
+    const rows = getRegistrations();
+    if (!rows.length) { alert("Chưa có dữ liệu để tải."); return; }
+    const headers = ["Họ tên","Số điện thoại","Email","Khối lớp","Khóa học","Ghi chú","Thời gian"];
+    const values = rows.map(r => [r.fullname,r.phone,r.email,r.grade,r.course,r.note,r.createdAt]);
+    const csv = [headers, ...values].map(row => row.map(v => '"' + String(v ?? "").replace(/"/g, '""') + '"').join(",")).join("\r\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "tic-labs-dang-ky-demo.csv"; a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById("clearData").addEventListener("click", function() {
+    if (confirm("Xóa toàn bộ dữ liệu đăng ký demo trên trình duyệt này?")) {
+      localStorage.removeItem(STORAGE_KEY);
+      message.textContent = "Đã xóa dữ liệu demo trên trình duyệt này.";
+      renderRegistrations();
+    }
+  });
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+  renderRegistrations();
+</script>
+</body>
+</html>

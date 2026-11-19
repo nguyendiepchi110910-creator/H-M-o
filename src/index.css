@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --blue: #2162c5;
+  --blue-dark: #123b75;
+  --blue-light: #eaf2ff;
+  --text: #202b3c;
+  --muted: #526277;
+  --line: #dbe5f2;
+  --white: #ffffff;
+  --surface-tint: #f8fbff;
+  --surface-register: #f7faff;
+  --font-main: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-main);
+    color: var(--text);
+    background-color: var(--white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body,
+  button,
+  input,
+  select,
+  textarea {
+    font-family: var(--font-main);
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--white);
+    color: var(--text);
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
+    font-family: var(--font-main);
+    text-wrap: balance;
+  }
+
+  .font-mono-num {
+    font-family: var(--font-main);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
